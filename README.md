@@ -34,9 +34,19 @@ Replace ```/path/to/script``` with the actual path to your script.
 
 ```dcon cdn```
 <br><br>
-<img src="https://raw.githubusercontent.com/disisto/docker-exec-shortcut/main/img/docker-selektor-dcon.png">
 
-This will execute the script and start the corresponding Docker container.
+### Example for Debian 12 (Bookwork)<br>
 
-Make sure that the path to your script is correctly specified for the alias to work properly.
+```sudo apt install curl nano```
 
+```sudo curl -JLO https://github.com/disisto/docker-exec-shortcut/blob/main/docker-selector.sh```
+
+```sudo chmod a+x docker-selector.sh```
+
+```sudo nano sudo nano .bashrc```
+
+Add the line ```alias dcon="/home/username/docker-selector.sh"``` at the end of the file and save with the key combination "CTRL" + "X", "Y".
+
+```source ~/.bashrc```
+
+```dcon```
