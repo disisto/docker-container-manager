@@ -39,13 +39,15 @@ Replace ```/path/to/script``` with the actual path to your script.
 
 ```sudo apt install curl nano```
 
-```sudo curl -JLO https://github.com/disisto/docker-exec-shortcut/blob/main/docker-selector.sh```
+```sudo curl -JLO https://raw.githubusercontent.com/disisto/docker-exec-shortcut/refs/heads/main/docker-selector.sh```
 
-```sudo chmod a+x docker-selector.sh```
+  ```sudo chmod a+x docker-selector.sh```
 
-```sudo nano sudo nano .bashrc```
+```sudo mv docker-selector.sh .docker-selector.sh```
 
-Add the line ```alias dcon="/home/username/docker-selector.sh"``` at the end of the file and save with the key combination "CTRL" + "X", "Y".
+```sudo nano .bashrc```
+
+Add the line ```alias dcon="/home/${USER}/.docker-selector.sh"``` at the end of the file and save with the key combination "CTRL" + "X", "Y".
 
 ```source ~/.bashrc```
 
