@@ -1,81 +1,189 @@
-# docker exec Shortcut
+# Advanced Docker Container Manager (dcon)
 
-Make quick adjustments via Docker exec without having to type the entire ``docker exec -it CONTAINERNAME /bin/bash`` command into the CLI when needed.
+A comprehensive Docker container management tool with an intuitive interface featuring shell access, log viewing, stats monitoring, port mappings, favorites, and much more.
 
-### Option 1: Get list<br>
-List all running containers and let select one of them. In this example ```12``` for Docker container named  ```cdn```.<br>
-``` bash
-./docker-selector.sh
-```
+## Features
 
-<img src="https://raw.githubusercontent.com/disisto/docker-exec-shortcut/main/img/docker-selektor.png">
+- **Interactive Shell Access** - Connect to containers with automatic shell detection (bash/sh/zsh/ash)
+- **Live Log Viewing** - Follow logs with timestamps and configurable tail length
+- **Real-time Stats** - Monitor CPU, memory, and network usage
+- **Container Information** - Detailed container inspection and port mappings
+- **Favorites System** - Mark frequently used containers for quick access
+- **Command History** - Track your recent container interactions
+- **Dynamic Tables** - Responsive column widths that adapt to your container names
+- **Partial Name Matching** - Type partial names to quickly find containers
+- **Detailed/Simple Views** - Toggle between compact and comprehensive displays
+- **Container Management** - Restart containers directly from the interface
 
-### Option 2: Direct call<br>
-Direct selection with the specification of the desired container. In this example ```cdn``` for Docker container named  ```cdn```.<br>
-``` bash
-./docker-selector.sh cdn
-```
-<img src="https://raw.githubusercontent.com/disisto/docker-exec-shortcut/main/img/docker-selektor-direct.png">
+## Usage Options
 
-### Optional: Bash/Zsh Alias<br>
-To connect to the container regardless of where you are in the CLI, you can also create an alias.
+### Option 1: Interactive Mode
+List all running containers with an interactive selection menu:
 
-1. Open your shell configuration file. Depending on the shell you're using, this might be ```~/.bashrc```, ```~/.bash_profile```, ```~/.zshrc```, or similar.<br>
-
-2. Add the following line to the end of the file to create an alias for the ```dcon``` command:
-
-``` bash
-alias dcon="/path/to/script/docker-selector.sh"
-```
-
-Replace ```dcon``` ("docker connect") with a command of your choice (e.g. ```dexec``` ("docker exec") or whatever you like).<br>
-Replace ```/path/to/script``` with the actual path to your script.
-
-3. Save the file and run the source command to load the updated alias settings into your current shell session:
-
-``` bash
-source ~/.bashrc   # or ~/.bash_profile, ~/.zshrc, depending on the file you edited
-```
-
-4. Now, you can run the ```dcon``` command from anywhere to execute your script. For example:
-
-``` bash
-dcon cdn
-```
-<br><br>
-
-### Example for Debian 12 (Bookwork)<br>
-
-``` bash
-sudo apt install curl nano
-```
-
-``` bash
-sudo curl -JLO https://raw.githubusercontent.com/disisto/docker-exec-shortcut/refs/heads/main/docker-selector.sh
-```
-
-``` bash
-sudo chmod a+x docker-selector.sh
-```
-
-``` bash
-sudo mv docker-selector.sh .docker-selector.sh
-```
-
-``` bash
-sudo nano .bashrc
-```
-
-Add the line 
-``` bash
-alias dcon="/home/${USER}/.docker-selector.sh"
-```
-at the end of the file and save with the key combination "CTRL" + "X", "Y".
-
-``` bash
-source ~/.bashrc
-```
-
-``` bash
+```bash
 dcon
 ```
+
+**Interactive Commands:**
+- `[1-9]` or `[container-name]` - Select container
+- `d` - Toggle advanced view (shows IP, uptime, ports, favorites)
+- `f` - Show only favorite containers
+- `h` - View command history
+- `q` - Quit
+
+### Option 2: Direct Access
+Connect directly to a specific container (supports partial matching):
+
+```bash
+dcon web-server
+dcon web      # Matches containers with "web" in the name
+```
+
+## Container Actions
+
+Once you select a container, you can:
+
+1. **Execute Shell** - Interactive bash/sh session
+2. **Show Logs (Live)** - `tail -f` with timestamps  
+3. **Show Stats** - Real-time CPU/memory monitoring
+4. **Container Info** - Detailed inspection data
+5. **Port Mappings** - View all port configurations
+6. **Restart Container** - Restart the selected container
+7. **Manage Favorites** - Add/remove from favorites
+8. **Show Logs (Static)** - View logs without following
+
+## Display Examples
+
+**Simple View:**
+```
++-----+------------------+
+| Nr. | Container Name   |
++-----+------------------+
+| 1   | web-server       |
+| 2   | database         |
++-----+------------------+
+
+Quick commands:
+  [1-9] | [name]    Select container    |  'd' Toggle advanced view     |  'f' Show favorites
+  'h' Show history  |  'q' Quit          |  Partial names supported (e.g., 'web' matches 'web-server')
+```
+
+**Advanced View:**
+```
++-----+------------------+-----------------+--------+------------+---+
+| Nr. | Container Name   | IP Address      | Uptime | Ports      | * |
++-----+------------------+-----------------+--------+------------+---+
+| 1   | web-server       | 172.17.0.2      | 2d     | 80→8080    |   |
+| 2   | database         | 172.17.0.3      | 5h     | N/A        | * |
++-----+------------------+-----------------+--------+------------+---+
+```
+
+## Installation
+
+### Global Installation (Recommended)
+
+1. **Download and install directly:**
+```bash
+curl -JLO https://raw.githubusercontent.com/disisto/docker-container-manager/main/docker-container-manager.sh
+chmod +x docker-container-manager.sh
+sudo mv docker-container-manager.sh /usr/local/bin/dcon
+```
+
+2. **Use from anywhere:**
+```bash
+dcon
+dcon nginx
+dcon web
+```
+
+### Alternative: Shell Alias Method
+
+1. **Place the script in your home directory:**
+```bash
+mv docker-container-manager.sh ~/.docker-container-manager.sh
+```
+
+2. **Add alias to your shell configuration:**
+```bash
+# For bash users
+echo 'alias dcon="$HOME/.docker-container-manager.sh"' >> ~/.bashrc
+source ~/.bashrc
+
+# For zsh users  
+echo 'alias dcon="$HOME/.docker-container-manager.sh"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+3. **Use the command:**
+```bash
+dcon
+dcon web-server
+```
+
+## Installation Example for Debian/Ubuntu
+
+```bash
+# Install dependencies
+sudo apt update && sudo apt install curl
+
+# Download and install
+curl -JLO https://raw.githubusercontent.com/disisto/docker-container-manager/main/docker-container-manager.sh
+chmod +x docker-container-manager.sh
+
+# Global installation
+sudo mv docker-container-manager.sh /usr/local/bin/dcon
+
+# Test installation
+dcon --help
+dcon
+```
+
+## Configuration
+
+The tool automatically creates configuration files in `~/.docker-selector/`:
+
+- **`favorites`** - Your favorite containers
+- **`history`** - Recent command history  
+- **`config`** - Tool settings (theme, log lines, etc.)
+
+## Advanced Features
+
+### Favorites Management
+- Add containers to favorites with action menu option 7
+- View only favorites with `f` command
+- Favorites are marked with `*` in the table
+
+### Command History
+- All actions are automatically logged with timestamps
+- View recent activity with `h` command
+- Tracks exec, logs, stats, info, ports, and restart actions
+
+### Dynamic Display
+- Table columns automatically resize based on content
+- Container names up to 50 characters fully displayed
+- IP addresses and ports get optimal column width
+- ASCII-compatible borders work in all terminals
+
+### Flexible Matching
+- Exact name matching: `dcon web-server`
+- Partial matching: `dcon web` (finds web-server, web-app, etc.)
+- Multiple partial matches show selection menu
+- Case-sensitive matching for precision
+
+## Requirements
+
+- **Docker** - Must be installed and running
+- **Bash** - Version 4.0+ recommended
+- **Terminal** - Any standard terminal with ASCII support
+
+## Tips
+
+- Use `d` to toggle advanced view for more container information
+- Partial names work great: `dcon db` instead of `dcon production-database-v2`
+- Add frequently used containers to favorites for quick access
+- Use `h` to see what you've been working on recently
+- The tool remembers your last view preference (simple/advanced)
+
+---
+
+**Complete Docker container management in one powerful tool!** 🚀
